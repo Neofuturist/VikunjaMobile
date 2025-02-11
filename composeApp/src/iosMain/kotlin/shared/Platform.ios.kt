@@ -1,4 +1,4 @@
-package ru.vikunja.mobile
+package shared
 
 import platform.UIKit.UIDevice
 

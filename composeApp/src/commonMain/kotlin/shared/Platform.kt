@@ -1,4 +1,4 @@
-package ru.vikunja.mobile
+package shared
 
 interface Platform {
     val name: String

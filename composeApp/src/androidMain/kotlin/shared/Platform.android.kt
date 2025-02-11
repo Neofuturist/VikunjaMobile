@@ -1,4 +1,4 @@
-package ru.vikunja.mobile
+package shared
 
 import android.os.Build
 
