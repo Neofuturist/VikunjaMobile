@@ -53,6 +53,7 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)
             api(libs.logging)
+            implementation(libs.androidx.datastore)
         }
     }
 }
