@@ -1,5 +1,6 @@
 package di
 
+import data.pref.DataStoreRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -10,6 +11,7 @@ import network.repository.UserRepository
 import network.repository.UserRepositoryImpl
 import network.usecase.AuthUseCase
 import org.koin.dsl.module
+import shared.dataStoreModule
 import shared.provideDispatcher
 import ui.screens.home.HomeViewModel
 import ui.screens.home.LoginViewModel
@@ -20,12 +22,13 @@ object KoinModules {
         viewModelModule,
         httpUtilModule,
         repoModule,
-        useCaseModule
+        useCaseModule,
+        dataStoreModule
     )
 
     private val viewModelModule = module {
         single { HomeViewModel() }
-        single { LoginViewModel(get(), get(), get()) }
+        single { LoginViewModel(get(), get(), get(), get()) }
     }
 
     private val ktorModule = module {
@@ -41,6 +44,7 @@ object KoinModules {
 
     private val repoModule = module {
         single<UserRepository> { UserRepositoryImpl(get(), get()) }
+        single { DataStoreRepository(get()) }
     }
 
     private val useCaseModule = module {

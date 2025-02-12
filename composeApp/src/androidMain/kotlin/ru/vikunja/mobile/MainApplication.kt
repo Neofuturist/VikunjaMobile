@@ -6,10 +6,10 @@ import android.content.Context
 class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        context = applicationContext
+        appContext = applicationContext
     }
 
     companion object {
-        var context: Context? = null
+        var appContext: Context? = null
     }
 }

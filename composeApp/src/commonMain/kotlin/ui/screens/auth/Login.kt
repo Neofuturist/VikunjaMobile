@@ -1,6 +1,5 @@
 package ui.screens.home
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Button
@@ -23,10 +22,11 @@ fun Login(
     val username by viewModel.username.collectAsState()
     val password by viewModel.password.collectAsState()
 
+    val testToken by viewModel.testToken.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextField(
@@ -38,10 +38,18 @@ fun Login(
             onValueChange = { (viewModel::setPassword)(it) }
         )
         Button(
-            onClick = { (viewModel::auth)() }
+            onClick = {
+                (viewModel::auth)()
+            }
         ) {
             Text(LocalTheme.current.strings.auth)
         }
+        Button(
+            onClick = {viewModel.saveToken()}
+        ) {
+            Text(("save test token"))
+        }
+        Text("Saved token: $testToken")
         MasterView(
             state = token,
             errorView = {},
