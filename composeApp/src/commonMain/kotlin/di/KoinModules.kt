@@ -6,10 +6,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import network.HttpUtil
 import network.ktor.KtorApi
+import network.ktor.ProjectApiService
 import network.ktor.UserAuthApiService
+import network.repository.ProjectRepository
+import network.repository.ProjectRepositoryImpl
 import network.repository.UserRepository
 import network.repository.UserRepositoryImpl
 import network.usecase.AuthUseCase
+import network.usecase.GetProjectsUseCase
 import org.koin.dsl.module
 import shared.dataStoreModule
 import shared.provideDispatcher
@@ -28,14 +32,15 @@ object KoinModules {
 
     private val viewModelModule = module {
         single { HomeViewModel() }
-        single { LoginViewModel(get(), get(), get(), get()) }
+        single { LoginViewModel(get(), get(), get(), get(), get()) }
     }
 
     private val ktorModule = module {
-        single { KtorApi() }
+        single { KtorApi(get()) }
         single { UserAuthApiService(get()) }
         single { provideDispatcher() }
         single { CoroutineScope(Dispatchers.IO) }
+        single { ProjectApiService(get()) }
     }
 
     private val httpUtilModule = module {
@@ -45,9 +50,11 @@ object KoinModules {
     private val repoModule = module {
         single<UserRepository> { UserRepositoryImpl(get(), get()) }
         single { DataStoreRepository(get()) }
+        single<ProjectRepository> { ProjectRepositoryImpl(get(), get()) }
     }
 
     private val useCaseModule = module {
         single { AuthUseCase(get()) }
+        single { GetProjectsUseCase(get()) }
     }
 }

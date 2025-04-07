@@ -54,6 +54,7 @@ kotlin {
             implementation(libs.ktor.client.logging)
             api(libs.logging)
             implementation(libs.androidx.datastore)
+            implementation(libs.ktor.client.auth)
         }
     }
 }

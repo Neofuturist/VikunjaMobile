@@ -3,19 +3,22 @@ package ui.screens.home
 import data.model.MasterUI
 import data.model.auth.AuthData
 import data.model.auth.TokenData
+import data.model.project.ProjectData
 import data.pref.DataStoreRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import network.usecase.AuthUseCase
+import network.usecase.GetProjectsUseCase
 import shared.Dispatcher
 
 class LoginViewModel(
     private val authUseCase: AuthUseCase,
     private val dispatcher: Dispatcher,
     private val mainScope: CoroutineScope,
-    private val dataStoreRepository: DataStoreRepository
+    private val dataStoreRepository: DataStoreRepository,
+    private val getProjectsUseCase: GetProjectsUseCase
 ) {
     private val _token: MutableStateFlow<MasterUI<TokenData>> = MutableStateFlow(MasterUI.Init)
     val token: StateFlow<MasterUI<TokenData>> = _token
@@ -51,12 +54,6 @@ class LoginViewModel(
     val testToken: StateFlow<String> = _testToken
 
     private fun readToken() {
-        /*mainScope.launch(dispatcher.io) {
-            dataStoreRepository.readToken()
-                .collectLatest { savedToken ->
-                    _testToken.value = savedToken
-                }
-        }*/
         mainScope.launch(dispatcher.io) {
             dataStoreRepository.readToken().collect { savedToken ->
                 _testToken.value = savedToken
@@ -64,9 +61,20 @@ class LoginViewModel(
         }
     }
 
-    fun saveToken() {
+    fun saveToken(value: String) {
         mainScope.launch(dispatcher.io) {
-            dataStoreRepository.saveToken(username.value)
+            dataStoreRepository.saveToken(value)
+        }
+    }
+
+    private val _proj: MutableStateFlow<MasterUI<List<ProjectData>>> = MutableStateFlow(MasterUI.Init)
+    val proj: StateFlow<MasterUI<List<ProjectData>>> = _proj
+
+    fun loadProjS() {
+        mainScope.launch(dispatcher.io) {
+            getProjectsUseCase.execute().collect { projData ->
+                _proj.value = projData.toMasterUI()
+            }
         }
     }
 

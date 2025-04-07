@@ -1,7 +1,9 @@
 package ui.screens.home
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -10,6 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import data.model.MasterUI
 import org.koin.compose.koinInject
 import ui.components.MasterView
 import ui.theme.LocalTheme
@@ -23,10 +26,12 @@ fun Login(
     val password by viewModel.password.collectAsState()
 
     val testToken by viewModel.testToken.collectAsState()
+    val projS by viewModel.proj.collectAsState()
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextField(
@@ -45,7 +50,11 @@ fun Login(
             Text(LocalTheme.current.strings.auth)
         }
         Button(
-            onClick = {viewModel.saveToken()}
+            onClick = {
+                if (token is MasterUI.Success) {
+                    viewModel.saveToken((token as MasterUI.Success).data.token ?: "")
+                }
+            }
         ) {
             Text(("save test token"))
         }
@@ -56,6 +65,20 @@ fun Login(
             loadingView = {}
         ) { tokenData ->
             Text(text = tokenData.token ?: "null")
+        }
+        Button(
+            onClick = {
+                viewModel.loadProjS()
+            }
+        ) {
+            Text("Load projects")
+        }
+        MasterView(
+            state = projS,
+            errorView = {},
+            loadingView = {}
+        ) { projects ->
+            Text(text = projects.toString())
         }
     }
 }
