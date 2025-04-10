@@ -15,6 +15,8 @@ import network.repository.UserRepositoryImpl
 import network.usecase.AuthUseCase
 import network.usecase.GetProjectsUseCase
 import org.koin.dsl.module
+import room.dbModule
+import room.platformModule
 import shared.dataStoreModule
 import shared.provideDispatcher
 import ui.screens.home.HomeViewModel
@@ -27,7 +29,9 @@ object KoinModules {
         httpUtilModule,
         repoModule,
         useCaseModule,
-        dataStoreModule
+        dataStoreModule,
+        dbModule(),
+        platformModule()
     )
 
     private val viewModelModule = module {
