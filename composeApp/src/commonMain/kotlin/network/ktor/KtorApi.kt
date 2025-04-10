@@ -56,7 +56,11 @@ class KtorApi(
                         val token = dataStoreRepository.readTokenString()
                         logging(TAG).d { "token: $token" }
                         BearerTokens(accessToken = token, refreshToken = null)
-                        //TODO refresh token
+                    }
+                    refreshTokens {
+                        val token = dataStoreRepository.readTokenString()
+                        logging(TAG).d { "token: $token" }
+                        BearerTokens(accessToken = token, refreshToken = null)
                     }
                 }
             }

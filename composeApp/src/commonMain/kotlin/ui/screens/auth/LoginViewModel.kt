@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import network.usecase.AuthUseCase
 import network.usecase.GetProjectsUseCase
+import org.lighthousegames.logging.logging
 import shared.Dispatcher
 
 class LoginViewModel(
@@ -73,6 +74,7 @@ class LoginViewModel(
     fun loadProjS() {
         mainScope.launch(dispatcher.io) {
             getProjectsUseCase.execute().collect { projData ->
+                logging("KtorApi").d { "projData: $projData" }
                 _proj.value = projData.toMasterUI()
             }
         }
