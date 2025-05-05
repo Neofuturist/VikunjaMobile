@@ -3,6 +3,7 @@ package com.example.room.ui.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,7 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,29 +35,41 @@ fun ItemsScreen(
     viewModel: ItemsScreenViewModel = koinInject()
 ) {
     val items by viewModel.items.collectAsState()
+    val newItemName by viewModel.newItemName.collectAsState()
 
     MasterView(
         state = items,
         errorView = {},
         loadingView = {}
     ) { mv ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color.White)
-                .padding(horizontal = 20.dp)
-        ) {
-            item {
-                Spacer(modifier = Modifier.height(40.dp))
+        Column {
+            Row {
+                TextField(
+                    value = newItemName,
+                    onValueChange = { (viewModel::setNewItemName)(it) }
+                )
+                Button(
+                    onClick = { (viewModel::addItem)() }
+                ) {
+                    Text("+")
+                }
             }
-            items(mv) {
-                ItemCard(it)
-                Spacer(modifier = Modifier.height(10.dp))
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = Color.White)
+                    .padding(horizontal = 20.dp)
+            ) {
+                item {
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
+                items(mv) {
+                    ItemCard(it)
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
             }
         }
     }
-
-
 }
 
 @Composable
@@ -83,6 +98,10 @@ private fun ItemCard(item: ItemEntity) {
         Text(
             text = item.description,
             fontSize = 18.sp
+        )
+        Text(
+            text = "test?",
+            fontSize = 12.sp
         )
     }
 }

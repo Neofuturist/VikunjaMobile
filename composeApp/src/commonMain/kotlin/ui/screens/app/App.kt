@@ -2,6 +2,7 @@ package ui.screens.app
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import com.example.room.ui.screen.ItemsScreen
 import di.KoinModules
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
@@ -14,8 +15,8 @@ fun App() {
         modules(KoinModules.appModule())
     }) {
         MaterialTheme {
-            Login()
-//            ItemsScreen()
+//            Login()
+            ItemsScreen()
         }
     }
 }

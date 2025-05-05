@@ -1,6 +1,7 @@
 package room
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
@@ -14,6 +15,7 @@ actual fun platformModule() = module {
 
 fun getDatabaseBuilder(ctx: Context): RoomDatabase.Builder<AppDatabase> {
     val appContext = ctx.applicationContext
+//    appContext.getDatabasePath("my_room.db").delete()
     val dbFile = appContext.getDatabasePath("my_room.db")
     return Room.databaseBuilder<AppDatabase>(
         context = appContext,

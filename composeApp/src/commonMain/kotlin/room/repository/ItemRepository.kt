@@ -33,6 +33,11 @@ class ItemRepository(
         emit(Resource.Success(dbItems))
     }
 
+    suspend fun getFlowItemsDB(): Flow<Resource<List<ItemEntity>>> = flow {
+        val dbItems = getItemsDB()
+        emit(Resource.Success(dbItems))
+    }
+
     suspend fun loadItems(): Flow<Resource<List<ItemEntity>>> = flow {
         emit(Resource.Loading)
         emit(httpUtil.checkResponse(databaseApiService.getItems()))
@@ -40,12 +45,23 @@ class ItemRepository(
 
     suspend fun updateItemsDB(items: List<ItemEntity>) {
         logging("test").d { "data: $items" }
-        itemDao.getAll().forEach { itemDao.delete(it) }
         items.forEach { itemDao.insert(it) }
     }
 
     suspend fun getItemsDB(): List<ItemEntity> {
         return itemDao.getAll()
+    }
+
+    suspend fun getAllIds(): List<Int> {
+        return itemDao.getAllIds()
+    }
+
+    suspend fun insertAllItems(items: List<ItemEntity>) {
+        items.forEach { itemDao.insert(it) }
+    }
+
+    suspend fun addItem(item: ItemEntity) {
+        itemDao.insert(item)
     }
 
     companion object {

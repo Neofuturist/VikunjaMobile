@@ -1,4 +1,4 @@
-rootProject.name = "VikunjaMobile"
+rootProject.name = "Taskpad"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
